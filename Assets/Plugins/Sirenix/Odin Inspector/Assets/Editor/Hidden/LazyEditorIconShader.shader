@@ -14,10 +14,10 @@ Shader "Hidden/Sirenix/Editor/GUIIcon"
         {
             CGPROGRAM
             #pragma vertex vert
-            #pragma fragment frag
+            #pragma fragment Fragment
             #include "UnityCG.cginc"
 
-            struct MeshData {
+            struct Attributes {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
@@ -30,14 +30,14 @@ Shader "Hidden/Sirenix/Editor/GUIIcon"
             sampler2D _MainTex;
             float4 _Color;
 
-            Interpolators vert(MeshData v) {
+            Interpolators vert(Attributes v) {
                 Interpolators o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 return o;
             }
 
-            fixed4 frag(Interpolators i) : SV_Target {
+            fixed4 Fragment(Interpolators i) : SV_Target {
                 // drop shadow:
                 // float texelSize = 1.0 / 34.0;
                 // float2 shadowUv = clamp(i.uv + float2(-texelSize, texelSize * 2), float2(0, 0), float2(1, 1));

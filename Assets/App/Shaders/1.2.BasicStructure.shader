@@ -1,10 +1,10 @@
-Shader "_Shaders/Unlit1.1"
+Shader "_Shaders/Unlit1.2"
 {
     Properties
     {
         // PROPERTIES
-        _Color ("Color", Color) = (1,0,0,0)
-        _Color ("Color", Float) = (1,0,0,0)
+        _ColorA ("ColorA", Color) = (0,0,0,0)
+        _ColorB ("ColorB", Color) = (1,0,0,0)
     }
     SubShader
     {
@@ -20,18 +20,21 @@ Shader "_Shaders/Unlit1.1"
             #include "UnityCG.cginc"
 
             // VARIABLES
-            float4 _Color;
+            float4 _ColorA;
+            float4 _ColorB;
 
             struct Attributes
             {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
+                float4 uv : TEXCOORD0;
             };
 
             struct Interpolators
             {
                 float4 vertex : SV_POSITION;
                 float3 normal : TEXCOORD0;
+                float2 uv : TEXCOORD1;
             };
 
             // VERTEX SHADER
@@ -39,14 +42,16 @@ Shader "_Shaders/Unlit1.1"
             {
                 Interpolators o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.normal = v.normal;
+                o.normal = UnityObjectToWorldNormal(v.normal);
+                o.uv = v.uv;
                 return o;
             }
 
             // FRAGMENT SHADER
             float4 frag(Interpolators i) : SV_Target
             {
-                return float4(i.normal, 1);
+                float4 outColor = lerp(_ColorA, _ColorB, i.uv.x);
+                return outColor;
             }
             ENDCG
         }

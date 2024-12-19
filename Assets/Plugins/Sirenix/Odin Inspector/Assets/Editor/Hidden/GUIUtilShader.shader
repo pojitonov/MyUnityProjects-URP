@@ -15,7 +15,7 @@
             #pragma fragment frag
             #include "UnityCG.cginc"
 
-            struct MeshData {
+            struct Attributes {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
@@ -31,7 +31,7 @@
             float4 _SirenixOdin_GUIUv;
             float4 _SirenixOdin_HueColor;
 
-            Interpolators vert(MeshData v) {
+            Interpolators vert(Attributes v) {
                 Interpolators o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;

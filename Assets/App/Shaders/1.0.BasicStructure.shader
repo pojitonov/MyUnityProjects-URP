@@ -1,4 +1,4 @@
-Shader "Unlit/BasicStructure"
+Shader "_Shaders/Unlit1.0"
 {
     Properties
     {
@@ -23,14 +23,11 @@ Shader "Unlit/BasicStructure"
 
         Pass
         {
-            // Technically Unity use HLSL, could be HLSL Program, CG is kind of heritage from nVidia CG language
+            // For HLSL use HLSLPROGRAM
             CGPROGRAM
             // Defines what function is vertex or fragment shader
             #pragma vertex vert
             #pragma fragment frag
-
-            // Make fog work
-            #pragma multi_compile_fog
 
             // Includes Unity specific implementations into your shader
             #include "UnityCG.cginc"
@@ -40,7 +37,7 @@ Shader "Unlit/BasicStructure"
 
             // Default name (appdata) is confusing, renamed to MeshData
             // Mesh Data is always per vertex
-            struct MeshData
+            struct Attributes
             {
                 // Predefined options to get data from Mesh
                 float4 vertex : POSITION; // Vertex position
@@ -62,7 +59,7 @@ Shader "Unlit/BasicStructure"
 
             // Vertex Shader
             // Function that takes MeshData as input, Interpolates it and return
-            Interpolators vert(MeshData v)
+            Interpolators vert(Attributes v)
             {
                 Interpolators o;
                 // Vertex interpolators
@@ -73,7 +70,7 @@ Shader "Unlit/BasicStructure"
 
             // Fragment Shader
             // Function that takes interpolated data and return actual color
-            fixed4 frag(Interpolators i) : SV_Target // SV_Target means it outputs to Frame Buffer as target
+            float4 frag(Interpolators i) : SV_Target // SV_Target means it outputs to Frame Buffer as target
             {
                 return float4(1, 0, 0, 0); // return red color
             }
